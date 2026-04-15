@@ -15,7 +15,14 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader, Subset
 
-from fpet.data import CIFAR10WaveletDataset, FrequencyPatternDataset, split_cifar_train, split_dataset
+from fpet.data import (
+    CIFAR10WaveletDataset,
+    CIFAR100WaveletDataset,
+    FrequencyPatternDataset,
+    filter_dataset_by_names,
+    split_cifar_train,
+    split_dataset,
+)
 from fpet.models import FPETBundle, FrequencyRefiner, FullDEQClassifier, LLDEQClassifier, StandardCNN
 
 
@@ -36,6 +43,9 @@ class ExperimentConfig:
     learning_rate: float = 1e-3
     coreset_fraction: float = 0.55
     perturbation_epsilons: tuple[float, ...] = (0.0, 0.01, 0.02, 0.05)
+    class_names: tuple[str, ...] = ()
+    group_names: tuple[str, ...] = ()
+    max_classes_per_group: int | None = None
 
 
 def set_seed(seed: int) -> None:
@@ -51,6 +61,52 @@ def topk_accuracy(logits: torch.Tensor, labels: torch.Tensor, k: int) -> float:
     topk = logits.topk(min(k, logits.size(1)), dim=1).indices
     hits = topk.eq(labels.unsqueeze(1)).any(dim=1).float().mean()
     return float(hits.item())
+
+
+def dataset_meta(dataset) -> tuple[List[str], List[str], List[int]]:
+    base = dataset.dataset if isinstance(dataset, Subset) else dataset
+    class_names = getattr(base, "class_names", [])
+    group_names = getattr(base, "group_names", [])
+    class_to_group = getattr(base, "class_to_group", [])
+    return list(class_names), list(group_names), list(class_to_group)
+
+
+def summarize_group_accuracy(predictions: torch.Tensor, labels: torch.Tensor, names: List[str]) -> Dict[str, float]:
+    metrics: Dict[str, float] = {}
+    if not names:
+        return metrics
+    for index, name in enumerate(names):
+        mask = labels == index
+        if int(mask.sum().item()) == 0:
+            continue
+        accuracy = (predictions[mask] == labels[mask]).float().mean().item()
+        metrics[name] = float(accuracy)
+    return metrics
+
+
+def compute_eval_summary(
+    logits: torch.Tensor,
+    labels: torch.Tensor,
+    class_names: List[str],
+    group_labels: torch.Tensor | None = None,
+    group_names: List[str] | None = None,
+    class_to_group: List[int] | None = None,
+) -> Dict[str, object]:
+    predictions = logits.argmax(dim=1)
+    summary: Dict[str, object] = {
+        "top1": topk_accuracy(logits, labels, k=1),
+        "top5": topk_accuracy(logits, labels, k=5),
+        "per_class_top1": summarize_group_accuracy(predictions, labels, class_names),
+    }
+    if group_labels is not None and group_names and class_to_group:
+        valid = group_labels >= 0
+        predicted_groups = torch.tensor([class_to_group[int(pred)] for pred in predictions.tolist()], dtype=torch.long)
+        summary["per_group_top1"] = summarize_group_accuracy(
+            predicted_groups[valid],
+            group_labels[valid],
+            group_names,
+        )
+    return summary
 
 
 def train_classifier(model: nn.Module, loader: DataLoader, optimizer: torch.optim.Optimizer, device: torch.device, kind: str):
@@ -109,49 +165,52 @@ def evaluate_baseline(model: StandardCNN, loader: DataLoader, device: torch.devi
     model.eval()
     logits_all = []
     labels_all = []
+    groups_all = []
     with torch.no_grad():
         for batch in loader:
             logits_all.append(model(batch["image"].to(device)).cpu())
             labels_all.append(batch["label"])
+            groups_all.append(batch["group_label"])
     logits = torch.cat(logits_all)
     labels = torch.cat(labels_all)
-    return {
-        "top1": topk_accuracy(logits, labels, k=1),
-        "top5": topk_accuracy(logits, labels, k=5),
-    }
+    group_labels = torch.cat(groups_all)
+    class_names, group_names, class_to_group = dataset_meta(loader.dataset)
+    return compute_eval_summary(logits, labels, class_names, group_labels, group_names, class_to_group)
 
 
 def evaluate_cnn_ll(model: StandardCNN, loader: DataLoader, device: torch.device) -> Dict[str, float]:
     model.eval()
     logits_all = []
     labels_all = []
+    groups_all = []
     with torch.no_grad():
         for batch in loader:
             logits_all.append(model(batch["ll"].to(device)).cpu())
             labels_all.append(batch["label"])
+            groups_all.append(batch["group_label"])
     logits = torch.cat(logits_all)
     labels = torch.cat(labels_all)
-    return {
-        "top1": topk_accuracy(logits, labels, k=1),
-        "top5": topk_accuracy(logits, labels, k=5),
-    }
+    group_labels = torch.cat(groups_all)
+    class_names, group_names, class_to_group = dataset_meta(loader.dataset)
+    return compute_eval_summary(logits, labels, class_names, group_labels, group_names, class_to_group)
 
 
 def evaluate_deq(model: FullDEQClassifier, loader: DataLoader, device: torch.device) -> Dict[str, float]:
     model.eval()
     logits_all = []
     labels_all = []
+    groups_all = []
     with torch.no_grad():
         for batch in loader:
             logits, _ = model(batch["image"].to(device))
             logits_all.append(logits.cpu())
             labels_all.append(batch["label"])
+            groups_all.append(batch["group_label"])
     logits = torch.cat(logits_all)
     labels = torch.cat(labels_all)
-    return {
-        "top1": topk_accuracy(logits, labels, k=1),
-        "top5": topk_accuracy(logits, labels, k=5),
-    }
+    group_labels = torch.cat(groups_all)
+    class_names, group_names, class_to_group = dataset_meta(loader.dataset)
+    return compute_eval_summary(logits, labels, class_names, group_labels, group_names, class_to_group)
 
 
 def evaluate_bundle(bundle: FPETBundle, loader: DataLoader, device: torch.device) -> Dict[str, float]:
@@ -159,6 +218,7 @@ def evaluate_bundle(bundle: FPETBundle, loader: DataLoader, device: torch.device
     bundle.refiner.eval()
     logits_all = []
     labels_all = []
+    groups_all = []
     with torch.no_grad():
         for batch in loader:
             ll = batch["ll"].to(device)
@@ -166,12 +226,12 @@ def evaluate_bundle(bundle: FPETBundle, loader: DataLoader, device: torch.device
             features = bundle.ll_model.extract_features(ll)
             logits_all.append(bundle.refiner(features, high).cpu())
             labels_all.append(batch["label"])
+            groups_all.append(batch["group_label"])
     logits = torch.cat(logits_all)
     labels = torch.cat(labels_all)
-    return {
-        "top1": topk_accuracy(logits, labels, k=1),
-        "top5": topk_accuracy(logits, labels, k=5),
-    }
+    group_labels = torch.cat(groups_all)
+    class_names, group_names, class_to_group = dataset_meta(loader.dataset)
+    return compute_eval_summary(logits, labels, class_names, group_labels, group_names, class_to_group)
 
 
 def select_coreset(model: LLDEQClassifier, subset: Subset, fraction: float, device: torch.device) -> List[int]:
@@ -263,6 +323,38 @@ def build_datasets(config: ExperimentConfig):
             limit=config.test_limit,
             seed=config.seed,
         )
+        if config.class_names:
+            train_dataset = filter_dataset_by_names(train_dataset, allowed_class_names=config.class_names)
+            test_dataset = filter_dataset_by_names(test_dataset, allowed_class_names=config.class_names)
+        train_set, val_set = split_cifar_train(train_dataset)
+        return train_set, val_set, test_dataset
+
+    if config.dataset_name == "cifar100":
+        train_dataset = CIFAR100WaveletDataset(
+            root=config.cifar_root,
+            train=True,
+            limit=config.train_limit,
+            seed=config.seed,
+        )
+        test_dataset = CIFAR100WaveletDataset(
+            root=config.cifar_root,
+            train=False,
+            limit=config.test_limit,
+            seed=config.seed,
+        )
+        if config.class_names or config.group_names or config.max_classes_per_group is not None:
+            train_dataset = filter_dataset_by_names(
+                train_dataset,
+                allowed_class_names=config.class_names or None,
+                allowed_group_names=config.group_names or None,
+                max_classes_per_group=config.max_classes_per_group,
+            )
+            test_dataset = filter_dataset_by_names(
+                test_dataset,
+                allowed_class_names=config.class_names or None,
+                allowed_group_names=config.group_names or None,
+                max_classes_per_group=config.max_classes_per_group,
+            )
         train_set, val_set = split_cifar_train(train_dataset)
         return train_set, val_set, test_dataset
 
@@ -275,6 +367,8 @@ def run_experiment(config: ExperimentConfig) -> Dict[str, object]:
     tracemalloc.start()
 
     train_set, val_set, test_set = build_datasets(config)
+    class_names, group_names, _ = dataset_meta(train_set)
+    config.num_classes = len(class_names) if class_names else config.num_classes
     train_loader = DataLoader(train_set, batch_size=config.batch_size, shuffle=True)
     val_loader = DataLoader(val_set, batch_size=config.batch_size)
     test_loader = DataLoader(test_set, batch_size=config.batch_size)
@@ -358,16 +452,14 @@ def run_experiment(config: ExperimentConfig) -> Dict[str, object]:
         perturbations.append({"model": "ll_deq", "epsilon": epsilon, "distortion": ll_distortion})
 
     result = {
-        "baseline": {
-            **baseline_metrics,
-            "train_time_sec": baseline_time,
-            "param_count": count_parameters(baseline),
+        "dataset": {
+            "dataset_name": config.dataset_name,
+            "num_classes": config.num_classes,
+            "selected_classes": class_names,
+            "selected_groups": group_names,
         },
-        "cnn_ll": {
-            **ll_cnn_metrics,
-            "train_time_sec": ll_cnn_time,
-            "param_count": count_parameters(ll_cnn),
-        },
+        "baseline": {**baseline_metrics, "train_time_sec": baseline_time, "param_count": count_parameters(baseline)},
+        "cnn_ll": {**ll_cnn_metrics, "train_time_sec": ll_cnn_time, "param_count": count_parameters(ll_cnn)},
         "deq_full": {
             **full_deq_metrics,
             "train_time_sec": full_deq_time,
@@ -392,13 +484,36 @@ def run_experiment(config: ExperimentConfig) -> Dict[str, object]:
 
 
 def build_report(result: Dict[str, object]) -> str:
-    lines = ["Stage Metrics:"]
+    lines = ["Dataset:"]
+    for metric_name, metric_value in result["dataset"].items():
+        lines.append(f"- {metric_name}: {metric_value}")
+    lines.append("")
+    lines.append("Stage Metrics:")
     for stage_name in ("baseline", "cnn_ll", "deq_full", "fpet"):
         lines.append(f"- {stage_name}")
         for metric_name, metric_value in result[stage_name].items():
+            if isinstance(metric_value, dict):
+                continue
             lines.append(f"  - {metric_name}: {metric_value:.4f}" if isinstance(metric_value, float) else f"  - {metric_name}: {metric_value}")
     lines.append(f"- runtime\n  - memory_peak_mb: {result['memory_peak_mb']:.4f}")
     lines.append("")
+    lines.append("Per-Class Top-1:")
+    for stage_name in ("baseline", "cnn_ll", "deq_full", "fpet"):
+        lines.append(f"- {stage_name}")
+        for class_name, score in result[stage_name].get("per_class_top1", {}).items():
+            lines.append(f"  - {class_name}: {score:.4f}")
+    any_groups = any(result[stage_name].get("per_group_top1") for stage_name in ("baseline", "cnn_ll", "deq_full", "fpet"))
+    if any_groups:
+        lines.append("")
+        lines.append("Per-Group Top-1:")
+        for stage_name in ("baseline", "cnn_ll", "deq_full", "fpet"):
+            group_metrics = result[stage_name].get("per_group_top1", {})
+            if not group_metrics:
+                continue
+            lines.append(f"- {stage_name}")
+            for group_name, score in group_metrics.items():
+                lines.append(f"  - {group_name}: {score:.4f}")
+        lines.append("")
     lines.append("Perturbation Distortion:")
     for item in result["perturbations"]:
         lines.append(f"- {item['model']} epsilon={item['epsilon']:.3f}: {item['distortion']:.4f}")
@@ -407,8 +522,11 @@ def build_report(result: Dict[str, object]) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run a local FPET prototype experiment.")
-    parser.add_argument("--dataset", default="cifar10", choices=("cifar10", "synthetic"))
+    parser.add_argument("--dataset", default="cifar10", choices=("cifar10", "cifar100", "synthetic"))
     parser.add_argument("--cifar-root", default="data/cifar-10-batches-py")
+    parser.add_argument("--class-names", default="")
+    parser.add_argument("--group-names", default="")
+    parser.add_argument("--max-classes-per-group", type=int)
     parser.add_argument("--train-limit", type=int, default=5000)
     parser.add_argument("--test-limit", type=int, default=1000)
     parser.add_argument("--baseline-epochs", type=int, default=3)
@@ -425,7 +543,12 @@ def main() -> None:
         baseline_epochs=args.baseline_epochs,
         ll_epochs=args.ll_epochs,
         refiner_epochs=args.refiner_epochs,
+        class_names=tuple(name.strip() for name in args.class_names.split(",") if name.strip()),
+        group_names=tuple(name.strip() for name in args.group_names.split(",") if name.strip()),
+        max_classes_per_group=args.max_classes_per_group,
     )
+    if config.dataset_name == "cifar100":
+        config.num_classes = 100
     result = run_experiment(config)
 
     report = build_report(result)

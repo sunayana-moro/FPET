@@ -1,0 +1,92 @@
+Stage Metrics:
+- baseline
+  - top1: 0.0800
+  - top5: 0.4850
+  - train_time_sec: 0.2062
+  - param_count: 53194
+- cnn_ll
+  - top1: 0.1400
+  - top5: 0.5150
+  - train_time_sec: 0.0844
+  - param_count: 53194
+- deq_full
+  - top1: 0.1200
+  - top5: 0.5250
+  - train_time_sec: 0.0448
+  - param_count: 34218
+  - spectral_proxy: 0.1366
+- fpet
+  - top1: 0.1050
+  - top5: 0.5000
+  - ll_stage_time_sec: 0.0201
+  - coreset_time_sec: 0.0654
+  - refine_time_sec: 0.0119
+  - end_to_end_time_sec: 0.0974
+  - param_count: 25414
+  - coreset_fraction_realized: 0.5600
+  - spectral_proxy: 0.1169
+- runtime
+  - memory_peak_mb: 1178.5238
+
+Per-Class Top-1:
+- baseline
+  - airplane: 0.0000
+  - automobile: 0.0000
+  - bird: 0.0000
+  - cat: 0.0000
+  - deer: 0.0000
+  - dog: 0.0000
+  - frog: 0.0000
+  - horse: 0.0000
+  - ship: 1.0000
+  - truck: 0.0000
+- cnn_ll
+  - airplane: 0.0000
+  - automobile: 0.8261
+  - bird: 0.5294
+  - cat: 0.0000
+  - deer: 0.0000
+  - dog: 0.0000
+  - frog: 0.0000
+  - horse: 0.0000
+  - ship: 0.0000
+  - truck: 0.0000
+- deq_full
+  - airplane: 1.0000
+  - automobile: 0.0000
+  - bird: 0.0000
+  - cat: 0.0000
+  - deer: 0.0000
+  - dog: 0.0000
+  - frog: 0.0000
+  - horse: 0.0000
+  - ship: 0.1250
+  - truck: 0.0000
+- fpet
+  - airplane: 0.0000
+  - automobile: 0.0435
+  - bird: 0.0000
+  - cat: 0.0000
+  - deer: 0.0000
+  - dog: 0.0000
+  - frog: 0.2632
+  - horse: 0.0000
+  - ship: 0.9375
+  - truck: 0.0000
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.2540
+- ll_cnn epsilon=0.010: 0.2782
+- full_deq epsilon=0.010: 0.1579
+- ll_deq epsilon=0.010: 0.1913
+- baseline_cnn epsilon=0.020: 0.3954
+- ll_cnn epsilon=0.020: 0.4768
+- full_deq epsilon=0.020: 0.3655
+- ll_deq epsilon=0.020: 0.3240
+- baseline_cnn epsilon=0.050: 1.9411
+- ll_cnn epsilon=0.050: 2.5140
+- full_deq epsilon=0.050: 0.7685
+- ll_deq epsilon=0.050: 0.6864
