@@ -1,0 +1,30 @@
+Run ID: 3
+
+Stage Metrics:
+- baseline
+  - top1: 0.1220
+  - top5: 0.5720
+  - train_time_sec: 0.7990
+  - param_count: 53194
+- fpet
+  - top1: 0.1740
+  - top5: 0.6580
+  - ll_stage_time_sec: 0.0874
+  - coreset_time_sec: 0.2653
+  - refine_time_sec: 0.0398
+  - end_to_end_time_sec: 0.3925
+  - param_count: 25414
+  - coreset_fraction_realized: 0.5528
+  - spectral_proxy: 0.2545
+- runtime
+  - memory_peak_mb: 1196.1130
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.1413
+- ll_deq epsilon=0.010: 0.2042
+- baseline_cnn epsilon=0.020: 0.4001
+- ll_deq epsilon=0.020: 0.4495
+- baseline_cnn epsilon=0.050: 1.3885
+- ll_deq epsilon=0.050: 0.7052

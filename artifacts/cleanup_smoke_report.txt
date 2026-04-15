@@ -1,0 +1,28 @@
+Stage Metrics:
+- baseline
+  - top1: 0.0963
+  - top5: 0.5259
+  - train_time_sec: 0.2803
+  - param_count: 53194
+- fpet
+  - top1: 0.2889
+  - top5: 0.5185
+  - ll_stage_time_sec: 0.0289
+  - coreset_time_sec: 0.0892
+  - refine_time_sec: 0.0149
+  - end_to_end_time_sec: 0.1329
+  - param_count: 25414
+  - coreset_fraction_realized: 0.5556
+  - spectral_proxy: 0.1662
+- runtime
+  - memory_peak_mb: 57.0083
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.2176
+- ll_deq epsilon=0.010: 0.2869
+- baseline_cnn epsilon=0.020: 0.5773
+- ll_deq epsilon=0.020: 0.5617
+- baseline_cnn epsilon=0.050: 1.5461
+- ll_deq epsilon=0.050: 1.0929
