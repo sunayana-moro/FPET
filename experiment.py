@@ -64,6 +64,8 @@ def train_classifier(model: nn.Module, loader: DataLoader, optimizer: torch.opti
         optimizer.zero_grad()
         if kind == "baseline":
             logits = model(batch["image"].to(device))
+        elif kind == "ll_cnn":
+            logits = model(batch["ll"].to(device))
         elif kind == "full_deq":
             logits, _ = model(batch["image"].to(device))
         elif kind == "ll":
@@ -110,6 +112,22 @@ def evaluate_baseline(model: StandardCNN, loader: DataLoader, device: torch.devi
     with torch.no_grad():
         for batch in loader:
             logits_all.append(model(batch["image"].to(device)).cpu())
+            labels_all.append(batch["label"])
+    logits = torch.cat(logits_all)
+    labels = torch.cat(labels_all)
+    return {
+        "top1": topk_accuracy(logits, labels, k=1),
+        "top5": topk_accuracy(logits, labels, k=5),
+    }
+
+
+def evaluate_cnn_ll(model: StandardCNN, loader: DataLoader, device: torch.device) -> Dict[str, float]:
+    model.eval()
+    logits_all = []
+    labels_all = []
+    with torch.no_grad():
+        for batch in loader:
+            logits_all.append(model(batch["ll"].to(device)).cpu())
             labels_all.append(batch["label"])
     logits = torch.cat(logits_all)
     labels = torch.cat(labels_all)
@@ -205,6 +223,8 @@ def collect_features(model: nn.Module, loader: DataLoader, device: torch.device,
         for batch in loader:
             if kind == "baseline":
                 feats = model.extract_features(batch["image"].to(device))
+            elif kind == "ll_cnn":
+                feats = model.extract_features(batch["ll"].to(device))
             elif kind == "full_deq":
                 feats = model.extract_features(batch["image"].to(device))
             elif kind == "ll":
@@ -267,6 +287,14 @@ def run_experiment(config: ExperimentConfig) -> Dict[str, object]:
     baseline_time = time.perf_counter() - start
     baseline_metrics = evaluate_baseline(baseline, test_loader, device)
 
+    ll_cnn = StandardCNN(num_classes=config.num_classes).to(device)
+    ll_cnn_optimizer = torch.optim.Adam(ll_cnn.parameters(), lr=config.learning_rate)
+    start = time.perf_counter()
+    for _ in range(config.baseline_epochs):
+        train_classifier(ll_cnn, train_loader, ll_cnn_optimizer, device, kind="ll_cnn")
+    ll_cnn_time = time.perf_counter() - start
+    ll_cnn_metrics = evaluate_cnn_ll(ll_cnn, test_loader, device)
+
     full_deq = FullDEQClassifier(image_size=config.image_size, num_classes=config.num_classes).to(device)
     full_deq_optimizer = torch.optim.Adam(full_deq.parameters(), lr=config.learning_rate)
     start = time.perf_counter()
@@ -303,15 +331,20 @@ def run_experiment(config: ExperimentConfig) -> Dict[str, object]:
 
     perturb_loader = DataLoader(val_set, batch_size=config.batch_size)
     baseline_reference = collect_features(baseline, perturb_loader, device, kind="baseline")
+    ll_cnn_reference = collect_features(ll_cnn, perturb_loader, device, kind="ll_cnn")
     full_deq_reference = collect_features(full_deq, perturb_loader, device, kind="full_deq")
     ll_reference = collect_features(ll_model, perturb_loader, device, kind="ll")
     perturbations = []
     for epsilon in config.perturbation_epsilons:
         perturbed_baseline = perturb_model(baseline, epsilon)
+        perturbed_ll_cnn = perturb_model(ll_cnn, epsilon)
         perturbed_full_deq = perturb_model(full_deq, epsilon)
         perturbed_ll = perturb_model(ll_model, epsilon)
         baseline_distortion = feature_distortion(
             baseline_reference, collect_features(perturbed_baseline, perturb_loader, device, kind="baseline")
+        )
+        ll_cnn_distortion = feature_distortion(
+            ll_cnn_reference, collect_features(perturbed_ll_cnn, perturb_loader, device, kind="ll_cnn")
         )
         full_deq_distortion = feature_distortion(
             full_deq_reference, collect_features(perturbed_full_deq, perturb_loader, device, kind="full_deq")
@@ -320,6 +353,7 @@ def run_experiment(config: ExperimentConfig) -> Dict[str, object]:
             ll_reference, collect_features(perturbed_ll, perturb_loader, device, kind="ll")
         )
         perturbations.append({"model": "baseline_cnn", "epsilon": epsilon, "distortion": baseline_distortion})
+        perturbations.append({"model": "ll_cnn", "epsilon": epsilon, "distortion": ll_cnn_distortion})
         perturbations.append({"model": "full_deq", "epsilon": epsilon, "distortion": full_deq_distortion})
         perturbations.append({"model": "ll_deq", "epsilon": epsilon, "distortion": ll_distortion})
 
@@ -328,6 +362,11 @@ def run_experiment(config: ExperimentConfig) -> Dict[str, object]:
             **baseline_metrics,
             "train_time_sec": baseline_time,
             "param_count": count_parameters(baseline),
+        },
+        "cnn_ll": {
+            **ll_cnn_metrics,
+            "train_time_sec": ll_cnn_time,
+            "param_count": count_parameters(ll_cnn),
         },
         "deq_full": {
             **full_deq_metrics,
@@ -354,7 +393,7 @@ def run_experiment(config: ExperimentConfig) -> Dict[str, object]:
 
 def build_report(result: Dict[str, object]) -> str:
     lines = ["Stage Metrics:"]
-    for stage_name in ("baseline", "deq_full", "fpet"):
+    for stage_name in ("baseline", "cnn_ll", "deq_full", "fpet"):
         lines.append(f"- {stage_name}")
         for metric_name, metric_value in result[stage_name].items():
             lines.append(f"  - {metric_name}: {metric_value:.4f}" if isinstance(metric_value, float) else f"  - {metric_name}: {metric_value}")
