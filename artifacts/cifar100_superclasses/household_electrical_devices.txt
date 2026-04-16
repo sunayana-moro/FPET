@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['clock', 'keyboard', 'lamp', 'telephone', 'television']
+- selected_groups: ['household_electrical_devices']
+
+Stage Metrics:
+- baseline
+  - top1: 0.2620
+  - top5: 1.0000
+  - train_time_sec: 1.3585
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.2180
+  - top5: 1.0000
+  - train_time_sec: 0.6652
+  - param_count: 52709
+- deq_full
+  - top1: 0.3640
+  - top5: 1.0000
+  - train_time_sec: 0.1881
+  - param_count: 34053
+  - spectral_proxy: 0.2337
+- fpet
+  - top1: 0.3740
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1770
+  - coreset_time_sec: 0.5148
+  - refine_time_sec: 0.1050
+  - end_to_end_time_sec: 0.7968
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5507
+  - spectral_proxy: 0.2872
+- runtime
+  - memory_peak_mb: 1322.2522
+
+Per-Class Top-1:
+- baseline
+  - clock: 0.0000
+  - keyboard: 0.0000
+  - lamp: 0.0000
+  - telephone: 0.3800
+  - television: 0.9300
+- cnn_ll
+  - clock: 0.1300
+  - keyboard: 0.0000
+  - lamp: 0.0000
+  - telephone: 0.9300
+  - television: 0.0300
+- deq_full
+  - clock: 0.3700
+  - keyboard: 0.5700
+  - lamp: 0.1800
+  - telephone: 0.6500
+  - television: 0.0500
+- fpet
+  - clock: 0.0600
+  - keyboard: 0.5600
+  - lamp: 0.3100
+  - telephone: 0.7700
+  - television: 0.1700
+
+Per-Group Top-1:
+- baseline
+  - household_electrical_devices: 1.0000
+- cnn_ll
+  - household_electrical_devices: 1.0000
+- deq_full
+  - household_electrical_devices: 1.0000
+- fpet
+  - household_electrical_devices: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.1225
+- ll_cnn epsilon=0.010: 0.1259
+- full_deq epsilon=0.010: 0.0905
+- ll_deq epsilon=0.010: 0.1659
+- baseline_cnn epsilon=0.020: 0.3621
+- ll_cnn epsilon=0.020: 0.2082
+- full_deq epsilon=0.020: 0.1832
+- ll_deq epsilon=0.020: 0.3310
+- baseline_cnn epsilon=0.050: 1.1216
+- ll_cnn epsilon=0.050: 0.8906
+- full_deq epsilon=0.050: 0.3502
+- ll_deq epsilon=0.050: 0.7810

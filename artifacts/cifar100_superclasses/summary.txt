@@ -1,0 +1,22 @@
+CIFAR-100 Superclass Sweep
+
+- aquatic_mammals: baseline=0.2680, cnn_ll=0.2040, deq_full=0.2480, fpet=0.2540
+- fish: baseline=0.3100, cnn_ll=0.3200, deq_full=0.4400, fpet=0.3520
+- flowers: baseline=0.2320, cnn_ll=0.2240, deq_full=0.2860, fpet=0.2840
+- food_containers: baseline=0.2540, cnn_ll=0.2620, deq_full=0.3680, fpet=0.3180
+- fruit_and_vegetables: baseline=0.3120, cnn_ll=0.3380, deq_full=0.3400, fpet=0.3160
+- household_electrical_devices: baseline=0.2620, cnn_ll=0.2180, deq_full=0.3640, fpet=0.3740
+- household_furniture: baseline=0.3220, cnn_ll=0.3560, deq_full=0.3800, fpet=0.3400
+- insects: baseline=0.3380, cnn_ll=0.3660, deq_full=0.3420, fpet=0.3540
+- large_carnivores: baseline=0.2620, cnn_ll=0.2340, deq_full=0.2780, fpet=0.3320
+- large_man-made_outdoor_things: baseline=0.3040, cnn_ll=0.3340, deq_full=0.3740, fpet=0.3340
+- large_natural_outdoor_scenes: baseline=0.3440, cnn_ll=0.4160, deq_full=0.3600, fpet=0.3180
+- large_omnivores_and_herbivores: baseline=0.2840, cnn_ll=0.3060, deq_full=0.3180, fpet=0.3380
+- medium_mammals: baseline=0.2780, cnn_ll=0.3180, deq_full=0.2960, fpet=0.2880
+- non-insect_invertebrates: baseline=0.2400, cnn_ll=0.2980, deq_full=0.2440, fpet=0.2740
+- people: baseline=0.2500, cnn_ll=0.2560, deq_full=0.2280, fpet=0.2560
+- reptiles: baseline=0.2660, cnn_ll=0.2060, deq_full=0.2900, fpet=0.2940
+- small_mammals: baseline=0.2900, cnn_ll=0.2660, deq_full=0.3100, fpet=0.3260
+- trees: baseline=0.2000, cnn_ll=0.3020, deq_full=0.3780, fpet=0.3400
+- vehicles_1: baseline=0.2840, cnn_ll=0.3240, deq_full=0.3560, fpet=0.3800
+- vehicles_2: baseline=0.2540, cnn_ll=0.3480, deq_full=0.4740, fpet=0.4160

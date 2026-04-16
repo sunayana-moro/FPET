@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['crab', 'lobster', 'snail', 'spider', 'worm']
+- selected_groups: ['non-insect_invertebrates']
+
+Stage Metrics:
+- baseline
+  - top1: 0.2400
+  - top5: 1.0000
+  - train_time_sec: 1.3651
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.2980
+  - top5: 1.0000
+  - train_time_sec: 0.6906
+  - param_count: 52709
+- deq_full
+  - top1: 0.2440
+  - top5: 1.0000
+  - train_time_sec: 0.1916
+  - param_count: 34053
+  - spectral_proxy: 0.3118
+- fpet
+  - top1: 0.2740
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1980
+  - coreset_time_sec: 0.5305
+  - refine_time_sec: 0.1211
+  - end_to_end_time_sec: 0.8496
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5516
+  - spectral_proxy: 0.1954
+- runtime
+  - memory_peak_mb: 1322.2521
+
+Per-Class Top-1:
+- baseline
+  - crab: 0.3400
+  - lobster: 0.4700
+  - snail: 0.0000
+  - spider: 0.3900
+  - worm: 0.0000
+- cnn_ll
+  - crab: 0.2100
+  - lobster: 0.5700
+  - snail: 0.0400
+  - spider: 0.4100
+  - worm: 0.2600
+- deq_full
+  - crab: 0.6400
+  - lobster: 0.3900
+  - snail: 0.1500
+  - spider: 0.0000
+  - worm: 0.0400
+- fpet
+  - crab: 0.0100
+  - lobster: 0.7800
+  - snail: 0.1000
+  - spider: 0.0000
+  - worm: 0.4800
+
+Per-Group Top-1:
+- baseline
+  - non-insect_invertebrates: 1.0000
+- cnn_ll
+  - non-insect_invertebrates: 1.0000
+- deq_full
+  - non-insect_invertebrates: 1.0000
+- fpet
+  - non-insect_invertebrates: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.1588
+- ll_cnn epsilon=0.010: 0.2306
+- full_deq epsilon=0.010: 0.0596
+- ll_deq epsilon=0.010: 0.1575
+- baseline_cnn epsilon=0.020: 0.4164
+- ll_cnn epsilon=0.020: 0.3059
+- full_deq epsilon=0.020: 0.1133
+- ll_deq epsilon=0.020: 0.2495
+- baseline_cnn epsilon=0.050: 1.2842
+- ll_cnn epsilon=0.050: 1.5924
+- full_deq epsilon=0.050: 0.3257
+- ll_deq epsilon=0.050: 0.5615

@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['orchid', 'poppy', 'rose', 'sunflower', 'tulip']
+- selected_groups: ['flowers']
+
+Stage Metrics:
+- baseline
+  - top1: 0.2320
+  - top5: 1.0000
+  - train_time_sec: 1.1639
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.2240
+  - top5: 1.0000
+  - train_time_sec: 0.5643
+  - param_count: 52709
+- deq_full
+  - top1: 0.2860
+  - top5: 1.0000
+  - train_time_sec: 0.1653
+  - param_count: 34053
+  - spectral_proxy: 0.2035
+- fpet
+  - top1: 0.2840
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1419
+  - coreset_time_sec: 0.4361
+  - refine_time_sec: 0.0732
+  - end_to_end_time_sec: 0.6512
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5511
+  - spectral_proxy: 0.2299
+- runtime
+  - memory_peak_mb: 1322.2522
+
+Per-Class Top-1:
+- baseline
+  - orchid: 0.1000
+  - poppy: 0.0000
+  - rose: 0.0000
+  - sunflower: 0.2400
+  - tulip: 0.8200
+- cnn_ll
+  - orchid: 0.1000
+  - poppy: 0.0000
+  - rose: 0.0000
+  - sunflower: 0.8400
+  - tulip: 0.1800
+- deq_full
+  - orchid: 0.6100
+  - poppy: 0.0500
+  - rose: 0.0100
+  - sunflower: 0.7300
+  - tulip: 0.0300
+- fpet
+  - orchid: 0.7700
+  - poppy: 0.0000
+  - rose: 0.0000
+  - sunflower: 0.6500
+  - tulip: 0.0000
+
+Per-Group Top-1:
+- baseline
+  - flowers: 1.0000
+- cnn_ll
+  - flowers: 1.0000
+- deq_full
+  - flowers: 1.0000
+- fpet
+  - flowers: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.0899
+- ll_cnn epsilon=0.010: 0.1450
+- full_deq epsilon=0.010: 0.1003
+- ll_deq epsilon=0.010: 0.1453
+- baseline_cnn epsilon=0.020: 0.2814
+- ll_cnn epsilon=0.020: 0.2995
+- full_deq epsilon=0.020: 0.2451
+- ll_deq epsilon=0.020: 0.3058
+- baseline_cnn epsilon=0.050: 0.6647
+- ll_cnn epsilon=0.050: 1.0463
+- full_deq epsilon=0.050: 0.6022
+- ll_deq epsilon=0.050: 0.6260

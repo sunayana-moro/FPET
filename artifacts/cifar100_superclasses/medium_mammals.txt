@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['fox', 'porcupine', 'possum', 'raccoon', 'skunk']
+- selected_groups: ['medium_mammals']
+
+Stage Metrics:
+- baseline
+  - top1: 0.2780
+  - top5: 1.0000
+  - train_time_sec: 1.3732
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.3180
+  - top5: 1.0000
+  - train_time_sec: 0.6760
+  - param_count: 52709
+- deq_full
+  - top1: 0.2960
+  - top5: 1.0000
+  - train_time_sec: 0.1991
+  - param_count: 34053
+  - spectral_proxy: 0.2118
+- fpet
+  - top1: 0.2880
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1824
+  - coreset_time_sec: 0.5502
+  - refine_time_sec: 0.1058
+  - end_to_end_time_sec: 0.8384
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5507
+  - spectral_proxy: 0.2154
+- runtime
+  - memory_peak_mb: 1322.2521
+
+Per-Class Top-1:
+- baseline
+  - fox: 0.1800
+  - porcupine: 0.0200
+  - possum: 0.7700
+  - raccoon: 0.0600
+  - skunk: 0.3600
+- cnn_ll
+  - fox: 0.8200
+  - porcupine: 0.1500
+  - possum: 0.0200
+  - raccoon: 0.0000
+  - skunk: 0.6000
+- deq_full
+  - fox: 0.0900
+  - porcupine: 0.1800
+  - possum: 0.6400
+  - raccoon: 0.0200
+  - skunk: 0.5500
+- fpet
+  - fox: 0.2100
+  - porcupine: 0.0600
+  - possum: 0.3900
+  - raccoon: 0.0100
+  - skunk: 0.7700
+
+Per-Group Top-1:
+- baseline
+  - medium_mammals: 1.0000
+- cnn_ll
+  - medium_mammals: 1.0000
+- deq_full
+  - medium_mammals: 1.0000
+- fpet
+  - medium_mammals: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.1866
+- ll_cnn epsilon=0.010: 0.1735
+- full_deq epsilon=0.010: 0.1417
+- ll_deq epsilon=0.010: 0.1970
+- baseline_cnn epsilon=0.020: 0.4964
+- ll_cnn epsilon=0.020: 0.3207
+- full_deq epsilon=0.020: 0.3227
+- ll_deq epsilon=0.020: 0.2967
+- baseline_cnn epsilon=0.050: 1.4108
+- ll_cnn epsilon=0.050: 1.5187
+- full_deq epsilon=0.050: 0.6102
+- ll_deq epsilon=0.050: 0.7648

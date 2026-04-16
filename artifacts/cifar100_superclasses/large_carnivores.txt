@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['bear', 'leopard', 'lion', 'tiger', 'wolf']
+- selected_groups: ['large_carnivores']
+
+Stage Metrics:
+- baseline
+  - top1: 0.2620
+  - top5: 1.0000
+  - train_time_sec: 1.9294
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.2340
+  - top5: 1.0000
+  - train_time_sec: 1.1789
+  - param_count: 52709
+- deq_full
+  - top1: 0.2780
+  - top5: 1.0000
+  - train_time_sec: 0.3955
+  - param_count: 34053
+  - spectral_proxy: 0.2573
+- fpet
+  - top1: 0.3320
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.3787
+  - coreset_time_sec: 1.0710
+  - refine_time_sec: 0.2186
+  - end_to_end_time_sec: 1.6683
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5511
+  - spectral_proxy: 0.4204
+- runtime
+  - memory_peak_mb: 1322.2521
+
+Per-Class Top-1:
+- baseline
+  - bear: 0.4800
+  - leopard: 0.7600
+  - lion: 0.0000
+  - tiger: 0.0000
+  - wolf: 0.0700
+- cnn_ll
+  - bear: 0.9200
+  - leopard: 0.0000
+  - lion: 0.0100
+  - tiger: 0.2300
+  - wolf: 0.0100
+- deq_full
+  - bear: 0.4000
+  - leopard: 0.0200
+  - lion: 0.0400
+  - tiger: 0.8100
+  - wolf: 0.1200
+- fpet
+  - bear: 0.7900
+  - leopard: 0.0100
+  - lion: 0.0200
+  - tiger: 0.0000
+  - wolf: 0.8400
+
+Per-Group Top-1:
+- baseline
+  - large_carnivores: 1.0000
+- cnn_ll
+  - large_carnivores: 1.0000
+- deq_full
+  - large_carnivores: 1.0000
+- fpet
+  - large_carnivores: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.2485
+- ll_cnn epsilon=0.010: 0.2061
+- full_deq epsilon=0.010: 0.1143
+- ll_deq epsilon=0.010: 0.1544
+- baseline_cnn epsilon=0.020: 0.6803
+- ll_cnn epsilon=0.020: 0.4034
+- full_deq epsilon=0.020: 0.2753
+- ll_deq epsilon=0.020: 0.3450
+- baseline_cnn epsilon=0.050: 2.7509
+- ll_cnn epsilon=0.050: 2.7918
+- full_deq epsilon=0.050: 0.5642
+- ll_deq epsilon=0.050: 0.7491

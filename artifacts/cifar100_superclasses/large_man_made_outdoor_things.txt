@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['bridge', 'castle', 'house', 'road', 'skyscraper']
+- selected_groups: ['large_man-made_outdoor_things']
+
+Stage Metrics:
+- baseline
+  - top1: 0.3040
+  - top5: 1.0000
+  - train_time_sec: 1.3710
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.3340
+  - top5: 1.0000
+  - train_time_sec: 0.6669
+  - param_count: 52709
+- deq_full
+  - top1: 0.3740
+  - top5: 1.0000
+  - train_time_sec: 0.1942
+  - param_count: 34053
+  - spectral_proxy: 0.2735
+- fpet
+  - top1: 0.3340
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1835
+  - coreset_time_sec: 0.5366
+  - refine_time_sec: 0.1011
+  - end_to_end_time_sec: 0.8212
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5511
+  - spectral_proxy: 0.2773
+- runtime
+  - memory_peak_mb: 1322.2521
+
+Per-Class Top-1:
+- baseline
+  - bridge: 0.0000
+  - castle: 0.2500
+  - house: 0.8800
+  - road: 0.3900
+  - skyscraper: 0.0000
+- cnn_ll
+  - bridge: 0.2700
+  - castle: 0.1100
+  - house: 0.4000
+  - road: 0.0000
+  - skyscraper: 0.8900
+- deq_full
+  - bridge: 0.1200
+  - castle: 0.3400
+  - house: 0.0000
+  - road: 0.7700
+  - skyscraper: 0.6400
+- fpet
+  - bridge: 0.0000
+  - castle: 0.1500
+  - house: 0.0600
+  - road: 0.7200
+  - skyscraper: 0.7400
+
+Per-Group Top-1:
+- baseline
+  - large_man-made_outdoor_things: 1.0000
+- cnn_ll
+  - large_man-made_outdoor_things: 1.0000
+- deq_full
+  - large_man-made_outdoor_things: 1.0000
+- fpet
+  - large_man-made_outdoor_things: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.2033
+- ll_cnn epsilon=0.010: 0.1702
+- full_deq epsilon=0.010: 0.1827
+- ll_deq epsilon=0.010: 0.2398
+- baseline_cnn epsilon=0.020: 0.6462
+- ll_cnn epsilon=0.020: 0.2458
+- full_deq epsilon=0.020: 0.3929
+- ll_deq epsilon=0.020: 0.4392
+- baseline_cnn epsilon=0.050: 2.5251
+- ll_cnn epsilon=0.050: 1.1248
+- full_deq epsilon=0.050: 0.6763
+- ll_deq epsilon=0.050: 0.9436

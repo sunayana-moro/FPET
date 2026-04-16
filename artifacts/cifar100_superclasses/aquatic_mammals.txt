@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['beaver', 'dolphin', 'otter', 'seal', 'whale']
+- selected_groups: ['aquatic_mammals']
+
+Stage Metrics:
+- baseline
+  - top1: 0.2680
+  - top5: 1.0000
+  - train_time_sec: 1.1711
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.2040
+  - top5: 1.0000
+  - train_time_sec: 0.5531
+  - param_count: 52709
+- deq_full
+  - top1: 0.2480
+  - top5: 1.0000
+  - train_time_sec: 0.1776
+  - param_count: 34053
+  - spectral_proxy: 0.1688
+- fpet
+  - top1: 0.2540
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1406
+  - coreset_time_sec: 0.4276
+  - refine_time_sec: 0.0717
+  - end_to_end_time_sec: 0.6399
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5511
+  - spectral_proxy: 0.1941
+- runtime
+  - memory_peak_mb: 1322.2679
+
+Per-Class Top-1:
+- baseline
+  - beaver: 0.5900
+  - dolphin: 0.1600
+  - otter: 0.0000
+  - seal: 0.0000
+  - whale: 0.5900
+- cnn_ll
+  - beaver: 0.0300
+  - dolphin: 0.0000
+  - otter: 0.0000
+  - seal: 0.2400
+  - whale: 0.7500
+- deq_full
+  - beaver: 0.0000
+  - dolphin: 0.7100
+  - otter: 0.5200
+  - seal: 0.0100
+  - whale: 0.0000
+- fpet
+  - beaver: 0.0400
+  - dolphin: 0.3500
+  - otter: 0.0800
+  - seal: 0.0700
+  - whale: 0.7300
+
+Per-Group Top-1:
+- baseline
+  - aquatic_mammals: 1.0000
+- cnn_ll
+  - aquatic_mammals: 1.0000
+- deq_full
+  - aquatic_mammals: 1.0000
+- fpet
+  - aquatic_mammals: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.1861
+- ll_cnn epsilon=0.010: 0.1488
+- full_deq epsilon=0.010: 0.0755
+- ll_deq epsilon=0.010: 0.1893
+- baseline_cnn epsilon=0.020: 0.7919
+- ll_cnn epsilon=0.020: 0.3486
+- full_deq epsilon=0.020: 0.2129
+- ll_deq epsilon=0.020: 0.3238
+- baseline_cnn epsilon=0.050: 1.8347
+- ll_cnn epsilon=0.050: 1.2957
+- full_deq epsilon=0.050: 0.4697
+- ll_deq epsilon=0.050: 0.7370

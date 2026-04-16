@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['bed', 'chair', 'couch', 'table', 'wardrobe']
+- selected_groups: ['household_furniture']
+
+Stage Metrics:
+- baseline
+  - top1: 0.3220
+  - top5: 1.0000
+  - train_time_sec: 1.3755
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.3560
+  - top5: 1.0000
+  - train_time_sec: 0.6878
+  - param_count: 52709
+- deq_full
+  - top1: 0.3800
+  - top5: 1.0000
+  - train_time_sec: 0.1879
+  - param_count: 34053
+  - spectral_proxy: 0.2799
+- fpet
+  - top1: 0.3400
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1827
+  - coreset_time_sec: 0.5271
+  - refine_time_sec: 0.1001
+  - end_to_end_time_sec: 0.8099
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5511
+  - spectral_proxy: 0.3654
+- runtime
+  - memory_peak_mb: 1322.2522
+
+Per-Class Top-1:
+- baseline
+  - bed: 0.3000
+  - chair: 0.4700
+  - couch: 0.0000
+  - table: 0.0700
+  - wardrobe: 0.7700
+- cnn_ll
+  - bed: 0.0700
+  - chair: 0.8400
+  - couch: 0.0000
+  - table: 0.5400
+  - wardrobe: 0.3300
+- deq_full
+  - bed: 0.2000
+  - chair: 0.8800
+  - couch: 0.2700
+  - table: 0.2800
+  - wardrobe: 0.2700
+- fpet
+  - bed: 0.7100
+  - chair: 0.8500
+  - couch: 0.0000
+  - table: 0.0000
+  - wardrobe: 0.1400
+
+Per-Group Top-1:
+- baseline
+  - household_furniture: 1.0000
+- cnn_ll
+  - household_furniture: 1.0000
+- deq_full
+  - household_furniture: 1.0000
+- fpet
+  - household_furniture: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.0734
+- ll_cnn epsilon=0.010: 0.1293
+- full_deq epsilon=0.010: 0.1641
+- ll_deq epsilon=0.010: 0.2068
+- baseline_cnn epsilon=0.020: 0.1365
+- ll_cnn epsilon=0.020: 0.3252
+- full_deq epsilon=0.020: 0.3249
+- ll_deq epsilon=0.020: 0.3181
+- baseline_cnn epsilon=0.050: 0.5826
+- ll_cnn epsilon=0.050: 0.6616
+- full_deq epsilon=0.050: 0.6787
+- ll_deq epsilon=0.050: 0.7097

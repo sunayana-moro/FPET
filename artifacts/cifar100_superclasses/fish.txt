@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['aquarium_fish', 'flatfish', 'ray', 'shark', 'trout']
+- selected_groups: ['fish']
+
+Stage Metrics:
+- baseline
+  - top1: 0.3100
+  - top5: 1.0000
+  - train_time_sec: 1.1688
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.3200
+  - top5: 1.0000
+  - train_time_sec: 0.5507
+  - param_count: 52709
+- deq_full
+  - top1: 0.4400
+  - top5: 1.0000
+  - train_time_sec: 0.1632
+  - param_count: 34053
+  - spectral_proxy: 0.2919
+- fpet
+  - top1: 0.3520
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1434
+  - coreset_time_sec: 0.4447
+  - refine_time_sec: 0.0704
+  - end_to_end_time_sec: 0.6585
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5516
+  - spectral_proxy: 0.3639
+- runtime
+  - memory_peak_mb: 1322.2523
+
+Per-Class Top-1:
+- baseline
+  - aquarium_fish: 0.6500
+  - flatfish: 0.7300
+  - ray: 0.0000
+  - shark: 0.1700
+  - trout: 0.0000
+- cnn_ll
+  - aquarium_fish: 0.0000
+  - flatfish: 0.7700
+  - ray: 0.0900
+  - shark: 0.3800
+  - trout: 0.3600
+- deq_full
+  - aquarium_fish: 0.6000
+  - flatfish: 0.6800
+  - ray: 0.5200
+  - shark: 0.2400
+  - trout: 0.1600
+- fpet
+  - aquarium_fish: 0.8000
+  - flatfish: 0.5900
+  - ray: 0.2600
+  - shark: 0.0400
+  - trout: 0.0700
+
+Per-Group Top-1:
+- baseline
+  - fish: 1.0000
+- cnn_ll
+  - fish: 1.0000
+- deq_full
+  - fish: 1.0000
+- fpet
+  - fish: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.0767
+- ll_cnn epsilon=0.010: 0.1071
+- full_deq epsilon=0.010: 0.1747
+- ll_deq epsilon=0.010: 0.1552
+- baseline_cnn epsilon=0.020: 0.1288
+- ll_cnn epsilon=0.020: 0.4022
+- full_deq epsilon=0.020: 0.3631
+- ll_deq epsilon=0.020: 0.3143
+- baseline_cnn epsilon=0.050: 0.7427
+- ll_cnn epsilon=0.050: 0.8061
+- full_deq epsilon=0.050: 0.7350
+- ll_deq epsilon=0.050: 0.6554

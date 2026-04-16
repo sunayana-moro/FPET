@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['hamster', 'mouse', 'rabbit', 'shrew', 'squirrel']
+- selected_groups: ['small_mammals']
+
+Stage Metrics:
+- baseline
+  - top1: 0.2900
+  - top5: 1.0000
+  - train_time_sec: 1.4161
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.2660
+  - top5: 1.0000
+  - train_time_sec: 0.6998
+  - param_count: 52709
+- deq_full
+  - top1: 0.3100
+  - top5: 1.0000
+  - train_time_sec: 0.1971
+  - param_count: 34053
+  - spectral_proxy: 0.3249
+- fpet
+  - top1: 0.3260
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1980
+  - coreset_time_sec: 0.5548
+  - refine_time_sec: 0.1081
+  - end_to_end_time_sec: 0.8609
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5507
+  - spectral_proxy: 0.2996
+- runtime
+  - memory_peak_mb: 1322.2522
+
+Per-Class Top-1:
+- baseline
+  - hamster: 0.8000
+  - mouse: 0.0000
+  - rabbit: 0.2500
+  - shrew: 0.4000
+  - squirrel: 0.0000
+- cnn_ll
+  - hamster: 0.9400
+  - mouse: 0.0000
+  - rabbit: 0.0000
+  - shrew: 0.2900
+  - squirrel: 0.1000
+- deq_full
+  - hamster: 0.7200
+  - mouse: 0.1800
+  - rabbit: 0.2000
+  - shrew: 0.4000
+  - squirrel: 0.0500
+- fpet
+  - hamster: 0.7600
+  - mouse: 0.2200
+  - rabbit: 0.1500
+  - shrew: 0.4200
+  - squirrel: 0.0800
+
+Per-Group Top-1:
+- baseline
+  - small_mammals: 1.0000
+- cnn_ll
+  - small_mammals: 1.0000
+- deq_full
+  - small_mammals: 1.0000
+- fpet
+  - small_mammals: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.0885
+- ll_cnn epsilon=0.010: 0.1370
+- full_deq epsilon=0.010: 0.1513
+- ll_deq epsilon=0.010: 0.1716
+- baseline_cnn epsilon=0.020: 0.2074
+- ll_cnn epsilon=0.020: 0.2309
+- full_deq epsilon=0.020: 0.2967
+- ll_deq epsilon=0.020: 0.2791
+- baseline_cnn epsilon=0.050: 1.0866
+- ll_cnn epsilon=0.050: 0.6281
+- full_deq epsilon=0.050: 0.5555
+- ll_deq epsilon=0.050: 0.7781

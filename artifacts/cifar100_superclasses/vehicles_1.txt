@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['bicycle', 'bus', 'motorcycle', 'pickup_truck', 'train']
+- selected_groups: ['vehicles_1']
+
+Stage Metrics:
+- baseline
+  - top1: 0.2840
+  - top5: 1.0000
+  - train_time_sec: 1.4102
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.3240
+  - top5: 1.0000
+  - train_time_sec: 0.6710
+  - param_count: 52709
+- deq_full
+  - top1: 0.3560
+  - top5: 1.0000
+  - train_time_sec: 0.1943
+  - param_count: 34053
+  - spectral_proxy: 0.2613
+- fpet
+  - top1: 0.3800
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1684
+  - coreset_time_sec: 0.5411
+  - refine_time_sec: 0.0987
+  - end_to_end_time_sec: 0.8083
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5511
+  - spectral_proxy: 0.2394
+- runtime
+  - memory_peak_mb: 1322.2521
+
+Per-Class Top-1:
+- baseline
+  - bicycle: 0.6600
+  - bus: 0.0300
+  - motorcycle: 0.0000
+  - pickup_truck: 0.7300
+  - train: 0.0000
+- cnn_ll
+  - bicycle: 0.4400
+  - bus: 0.0000
+  - motorcycle: 0.3400
+  - pickup_truck: 0.7800
+  - train: 0.0600
+- deq_full
+  - bicycle: 0.8800
+  - bus: 0.3700
+  - motorcycle: 0.1500
+  - pickup_truck: 0.1800
+  - train: 0.2000
+- fpet
+  - bicycle: 0.4800
+  - bus: 0.4300
+  - motorcycle: 0.4500
+  - pickup_truck: 0.0000
+  - train: 0.5400
+
+Per-Group Top-1:
+- baseline
+  - vehicles_1: 1.0000
+- cnn_ll
+  - vehicles_1: 1.0000
+- deq_full
+  - vehicles_1: 1.0000
+- fpet
+  - vehicles_1: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.1046
+- ll_cnn epsilon=0.010: 0.1262
+- full_deq epsilon=0.010: 0.1382
+- ll_deq epsilon=0.010: 0.2067
+- baseline_cnn epsilon=0.020: 0.2531
+- ll_cnn epsilon=0.020: 0.2355
+- full_deq epsilon=0.020: 0.2891
+- ll_deq epsilon=0.020: 0.3843
+- baseline_cnn epsilon=0.050: 1.1993
+- ll_cnn epsilon=0.050: 0.8856
+- full_deq epsilon=0.050: 0.5846
+- ll_deq epsilon=0.050: 0.7989

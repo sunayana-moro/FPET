@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['apple', 'mushroom', 'orange', 'pear', 'sweet_pepper']
+- selected_groups: ['fruit_and_vegetables']
+
+Stage Metrics:
+- baseline
+  - top1: 0.3120
+  - top5: 1.0000
+  - train_time_sec: 1.4114
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.3380
+  - top5: 1.0000
+  - train_time_sec: 0.6965
+  - param_count: 52709
+- deq_full
+  - top1: 0.3400
+  - top5: 1.0000
+  - train_time_sec: 0.2017
+  - param_count: 34053
+  - spectral_proxy: 0.2774
+- fpet
+  - top1: 0.3160
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1877
+  - coreset_time_sec: 0.5090
+  - refine_time_sec: 0.0980
+  - end_to_end_time_sec: 0.7947
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5511
+  - spectral_proxy: 0.2907
+- runtime
+  - memory_peak_mb: 1322.2521
+
+Per-Class Top-1:
+- baseline
+  - apple: 0.0900
+  - mushroom: 0.8000
+  - orange: 0.0000
+  - pear: 0.5100
+  - sweet_pepper: 0.1600
+- cnn_ll
+  - apple: 0.2200
+  - mushroom: 0.7300
+  - orange: 0.5400
+  - pear: 0.0000
+  - sweet_pepper: 0.2000
+- deq_full
+  - apple: 0.6200
+  - mushroom: 0.5900
+  - orange: 0.0000
+  - pear: 0.1400
+  - sweet_pepper: 0.3500
+- fpet
+  - apple: 0.6600
+  - mushroom: 0.7500
+  - orange: 0.1300
+  - pear: 0.0100
+  - sweet_pepper: 0.0300
+
+Per-Group Top-1:
+- baseline
+  - fruit_and_vegetables: 1.0000
+- cnn_ll
+  - fruit_and_vegetables: 1.0000
+- deq_full
+  - fruit_and_vegetables: 1.0000
+- fpet
+  - fruit_and_vegetables: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.0981
+- ll_cnn epsilon=0.010: 0.1059
+- full_deq epsilon=0.010: 0.1108
+- ll_deq epsilon=0.010: 0.1942
+- baseline_cnn epsilon=0.020: 0.2560
+- ll_cnn epsilon=0.020: 0.2984
+- full_deq epsilon=0.020: 0.2330
+- ll_deq epsilon=0.020: 0.4031
+- baseline_cnn epsilon=0.050: 0.6637
+- ll_cnn epsilon=0.050: 0.9462
+- full_deq epsilon=0.050: 0.4736
+- ll_deq epsilon=0.050: 0.8403

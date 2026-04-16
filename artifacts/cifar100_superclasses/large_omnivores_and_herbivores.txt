@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['camel', 'cattle', 'chimpanzee', 'elephant', 'kangaroo']
+- selected_groups: ['large_omnivores_and_herbivores']
+
+Stage Metrics:
+- baseline
+  - top1: 0.2840
+  - top5: 1.0000
+  - train_time_sec: 1.5042
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.3060
+  - top5: 1.0000
+  - train_time_sec: 0.6778
+  - param_count: 52709
+- deq_full
+  - top1: 0.3180
+  - top5: 1.0000
+  - train_time_sec: 0.2139
+  - param_count: 34053
+  - spectral_proxy: 0.2700
+- fpet
+  - top1: 0.3380
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1969
+  - coreset_time_sec: 0.5182
+  - refine_time_sec: 0.1012
+  - end_to_end_time_sec: 0.8162
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5507
+  - spectral_proxy: 0.3201
+- runtime
+  - memory_peak_mb: 1322.2521
+
+Per-Class Top-1:
+- baseline
+  - camel: 0.8000
+  - cattle: 0.0200
+  - chimpanzee: 0.6000
+  - elephant: 0.0000
+  - kangaroo: 0.0000
+- cnn_ll
+  - camel: 0.8500
+  - cattle: 0.0000
+  - chimpanzee: 0.6700
+  - elephant: 0.0000
+  - kangaroo: 0.0100
+- deq_full
+  - camel: 0.5600
+  - cattle: 0.1000
+  - chimpanzee: 0.6200
+  - elephant: 0.0200
+  - kangaroo: 0.2900
+- fpet
+  - camel: 0.0600
+  - cattle: 0.0000
+  - chimpanzee: 0.8100
+  - elephant: 0.1300
+  - kangaroo: 0.6900
+
+Per-Group Top-1:
+- baseline
+  - large_omnivores_and_herbivores: 1.0000
+- cnn_ll
+  - large_omnivores_and_herbivores: 1.0000
+- deq_full
+  - large_omnivores_and_herbivores: 1.0000
+- fpet
+  - large_omnivores_and_herbivores: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.0705
+- ll_cnn epsilon=0.010: 0.1530
+- full_deq epsilon=0.010: 0.1396
+- ll_deq epsilon=0.010: 0.1489
+- baseline_cnn epsilon=0.020: 0.1189
+- ll_cnn epsilon=0.020: 0.1986
+- full_deq epsilon=0.020: 0.3334
+- ll_deq epsilon=0.020: 0.2779
+- baseline_cnn epsilon=0.050: 0.5159
+- ll_cnn epsilon=0.050: 0.7614
+- full_deq epsilon=0.050: 0.6286
+- ll_deq epsilon=0.050: 0.6234

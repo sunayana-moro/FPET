@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['bottle', 'bowl', 'can', 'cup', 'plate']
+- selected_groups: ['food_containers']
+
+Stage Metrics:
+- baseline
+  - top1: 0.2540
+  - top5: 1.0000
+  - train_time_sec: 2.5143
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.2620
+  - top5: 1.0000
+  - train_time_sec: 1.2791
+  - param_count: 52709
+- deq_full
+  - top1: 0.3680
+  - top5: 1.0000
+  - train_time_sec: 0.3964
+  - param_count: 34053
+  - spectral_proxy: 0.2418
+- fpet
+  - top1: 0.3180
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.3859
+  - coreset_time_sec: 0.5878
+  - refine_time_sec: 0.1238
+  - end_to_end_time_sec: 1.0976
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5511
+  - spectral_proxy: 0.2208
+- runtime
+  - memory_peak_mb: 1322.2522
+
+Per-Class Top-1:
+- baseline
+  - bottle: 0.0500
+  - bowl: 0.1900
+  - can: 0.0000
+  - cup: 0.2500
+  - plate: 0.7800
+- cnn_ll
+  - bottle: 0.0300
+  - bowl: 0.0000
+  - can: 0.9500
+  - cup: 0.1800
+  - plate: 0.1500
+- deq_full
+  - bottle: 0.3100
+  - bowl: 0.2000
+  - can: 0.5300
+  - cup: 0.4000
+  - plate: 0.4000
+- fpet
+  - bottle: 0.5700
+  - bowl: 0.0200
+  - can: 0.4000
+  - cup: 0.0000
+  - plate: 0.6000
+
+Per-Group Top-1:
+- baseline
+  - food_containers: 1.0000
+- cnn_ll
+  - food_containers: 1.0000
+- deq_full
+  - food_containers: 1.0000
+- fpet
+  - food_containers: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.0837
+- ll_cnn epsilon=0.010: 0.1463
+- full_deq epsilon=0.010: 0.1038
+- ll_deq epsilon=0.010: 0.1968
+- baseline_cnn epsilon=0.020: 0.2492
+- ll_cnn epsilon=0.020: 0.2854
+- full_deq epsilon=0.020: 0.2051
+- ll_deq epsilon=0.020: 0.3527
+- baseline_cnn epsilon=0.050: 0.9225
+- ll_cnn epsilon=0.050: 1.2539
+- full_deq epsilon=0.050: 0.4304
+- ll_deq epsilon=0.050: 0.6566

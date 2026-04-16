@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['crocodile', 'dinosaur', 'lizard', 'snake', 'turtle']
+- selected_groups: ['reptiles']
+
+Stage Metrics:
+- baseline
+  - top1: 0.2660
+  - top5: 1.0000
+  - train_time_sec: 1.4143
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.2060
+  - top5: 1.0000
+  - train_time_sec: 0.6959
+  - param_count: 52709
+- deq_full
+  - top1: 0.2900
+  - top5: 1.0000
+  - train_time_sec: 0.1950
+  - param_count: 34053
+  - spectral_proxy: 0.2381
+- fpet
+  - top1: 0.2940
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1880
+  - coreset_time_sec: 0.5295
+  - refine_time_sec: 0.0969
+  - end_to_end_time_sec: 0.8144
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5516
+  - spectral_proxy: 0.2160
+- runtime
+  - memory_peak_mb: 1322.2521
+
+Per-Class Top-1:
+- baseline
+  - crocodile: 0.6000
+  - dinosaur: 0.5200
+  - lizard: 0.0700
+  - snake: 0.0100
+  - turtle: 0.1300
+- cnn_ll
+  - crocodile: 0.0000
+  - dinosaur: 0.9200
+  - lizard: 0.0000
+  - snake: 0.0000
+  - turtle: 0.1100
+- deq_full
+  - crocodile: 0.0000
+  - dinosaur: 0.4600
+  - lizard: 0.8500
+  - snake: 0.0800
+  - turtle: 0.0600
+- fpet
+  - crocodile: 0.4900
+  - dinosaur: 0.7200
+  - lizard: 0.0000
+  - snake: 0.0000
+  - turtle: 0.2600
+
+Per-Group Top-1:
+- baseline
+  - reptiles: 1.0000
+- cnn_ll
+  - reptiles: 1.0000
+- deq_full
+  - reptiles: 1.0000
+- fpet
+  - reptiles: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.1399
+- ll_cnn epsilon=0.010: 0.1761
+- full_deq epsilon=0.010: 0.0804
+- ll_deq epsilon=0.010: 0.1527
+- baseline_cnn epsilon=0.020: 0.2823
+- ll_cnn epsilon=0.020: 0.3943
+- full_deq epsilon=0.020: 0.1027
+- ll_deq epsilon=0.020: 0.2462
+- baseline_cnn epsilon=0.050: 0.7438
+- ll_cnn epsilon=0.050: 1.6367
+- full_deq epsilon=0.050: 0.2941
+- ll_deq epsilon=0.050: 0.5564

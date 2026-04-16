@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['maple_tree', 'oak_tree', 'palm_tree', 'pine_tree', 'willow_tree']
+- selected_groups: ['trees']
+
+Stage Metrics:
+- baseline
+  - top1: 0.2000
+  - top5: 1.0000
+  - train_time_sec: 1.3836
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.3020
+  - top5: 1.0000
+  - train_time_sec: 0.6668
+  - param_count: 52709
+- deq_full
+  - top1: 0.3780
+  - top5: 1.0000
+  - train_time_sec: 0.1832
+  - param_count: 34053
+  - spectral_proxy: 0.2439
+- fpet
+  - top1: 0.3400
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1818
+  - coreset_time_sec: 0.5371
+  - refine_time_sec: 0.0957
+  - end_to_end_time_sec: 0.8145
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5511
+  - spectral_proxy: 0.3635
+- runtime
+  - memory_peak_mb: 1322.2521
+
+Per-Class Top-1:
+- baseline
+  - maple_tree: 0.0000
+  - oak_tree: 1.0000
+  - palm_tree: 0.0000
+  - pine_tree: 0.0000
+  - willow_tree: 0.0000
+- cnn_ll
+  - maple_tree: 0.0000
+  - oak_tree: 0.8600
+  - palm_tree: 0.3000
+  - pine_tree: 0.3500
+  - willow_tree: 0.0000
+- deq_full
+  - maple_tree: 0.3900
+  - oak_tree: 0.5600
+  - palm_tree: 0.7200
+  - pine_tree: 0.0100
+  - willow_tree: 0.2100
+- fpet
+  - maple_tree: 0.0400
+  - oak_tree: 0.8100
+  - palm_tree: 0.3000
+  - pine_tree: 0.0000
+  - willow_tree: 0.5500
+
+Per-Group Top-1:
+- baseline
+  - trees: 1.0000
+- cnn_ll
+  - trees: 1.0000
+- deq_full
+  - trees: 1.0000
+- fpet
+  - trees: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.1462
+- ll_cnn epsilon=0.010: 0.1422
+- full_deq epsilon=0.010: 0.1241
+- ll_deq epsilon=0.010: 0.1549
+- baseline_cnn epsilon=0.020: 0.4677
+- ll_cnn epsilon=0.020: 0.3075
+- full_deq epsilon=0.020: 0.2969
+- ll_deq epsilon=0.020: 0.3685
+- baseline_cnn epsilon=0.050: 1.4758
+- ll_cnn epsilon=0.050: 1.2367
+- full_deq epsilon=0.050: 0.7012
+- ll_deq epsilon=0.050: 0.7129

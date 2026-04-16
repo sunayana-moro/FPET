@@ -1,0 +1,89 @@
+Dataset:
+- dataset_name: cifar100
+- num_classes: 5
+- selected_classes: ['baby', 'boy', 'girl', 'man', 'woman']
+- selected_groups: ['people']
+
+Stage Metrics:
+- baseline
+  - top1: 0.2500
+  - top5: 1.0000
+  - train_time_sec: 1.4126
+  - param_count: 52709
+- cnn_ll
+  - top1: 0.2560
+  - top5: 1.0000
+  - train_time_sec: 0.7438
+  - param_count: 52709
+- deq_full
+  - top1: 0.2280
+  - top5: 1.0000
+  - train_time_sec: 0.2027
+  - param_count: 34053
+  - spectral_proxy: 0.2288
+- fpet
+  - top1: 0.2560
+  - top5: 1.0000
+  - ll_stage_time_sec: 0.1781
+  - coreset_time_sec: 0.5527
+  - refine_time_sec: 0.1085
+  - end_to_end_time_sec: 0.8392
+  - param_count: 25084
+  - coreset_fraction_realized: 0.5516
+  - spectral_proxy: 0.1777
+- runtime
+  - memory_peak_mb: 1322.2521
+
+Per-Class Top-1:
+- baseline
+  - baby: 0.5400
+  - boy: 0.1300
+  - girl: 0.0000
+  - man: 0.5800
+  - woman: 0.0000
+- cnn_ll
+  - baby: 0.1100
+  - boy: 0.0000
+  - girl: 0.5600
+  - man: 0.5900
+  - woman: 0.0200
+- deq_full
+  - baby: 0.2100
+  - boy: 0.0000
+  - girl: 0.0000
+  - man: 0.9300
+  - woman: 0.0000
+- fpet
+  - baby: 0.4700
+  - boy: 0.0000
+  - girl: 0.0000
+  - man: 0.0100
+  - woman: 0.8000
+
+Per-Group Top-1:
+- baseline
+  - people: 1.0000
+- cnn_ll
+  - people: 1.0000
+- deq_full
+  - people: 1.0000
+- fpet
+  - people: 1.0000
+
+Perturbation Distortion:
+- baseline_cnn epsilon=0.000: 0.0000
+- ll_cnn epsilon=0.000: 0.0000
+- full_deq epsilon=0.000: 0.0000
+- ll_deq epsilon=0.000: 0.0000
+- baseline_cnn epsilon=0.010: 0.1370
+- ll_cnn epsilon=0.010: 0.2369
+- full_deq epsilon=0.010: 0.0586
+- ll_deq epsilon=0.010: 0.1782
+- baseline_cnn epsilon=0.020: 0.3475
+- ll_cnn epsilon=0.020: 0.3869
+- full_deq epsilon=0.020: 0.1555
+- ll_deq epsilon=0.020: 0.3130
+- baseline_cnn epsilon=0.050: 1.4333
+- ll_cnn epsilon=0.050: 1.3962
+- full_deq epsilon=0.050: 0.2935
+- ll_deq epsilon=0.050: 0.7328
